@@ -1,0 +1,30 @@
+name: PHP Test Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.0'
+
+    - name: Install dependencies
+      run: composer install  # If you have dependencies
+
+    - name: Execute PHP scripts
+      run: |
+        php script1.php
+        php script2.php
+        php script3.php
+        # Import your SQL dump if needed
+        # mysql -u username -p password < dump.sql
