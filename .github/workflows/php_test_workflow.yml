@@ -23,8 +23,8 @@ jobs:
 
     - name: Execute PHP scripts
       run: |
-        php script1.php
-        php script2.php
-        php script3.php
+        display_polling_unit.php
+        display_lga_results.php
+        input_new_unit.php
         # Import your SQL dump if needed
         # mysql -u username -p password < dump.sql
