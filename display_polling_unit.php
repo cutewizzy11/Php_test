@@ -1,3 +1,6 @@
+<?php
+header("Content-Type: text/html; charset=UTF-8");
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -58,7 +61,6 @@
     <h1>Polling Unit Results</h1>
 
     <?php
-    header("Content-Type: text/html; charset=UTF-8");
     // Connect to the database
     $mysqli = new mysqli("localhost", "root", "", "election");
     

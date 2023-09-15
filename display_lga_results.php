@@ -1,3 +1,6 @@
+<?php
+header("Content-Type: text/html; charset=UTF-8");
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -105,7 +108,6 @@
     </form>
 
     <?php
-    header("Content-Type: text/html; charset=UTF-8");
     // Check if the form is submitted
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Get the selected LGA ID

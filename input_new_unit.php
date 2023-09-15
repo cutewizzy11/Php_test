@@ -1,3 +1,6 @@
+<?php
+header("Content-Type: text/html; charset=UTF-8");
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -93,7 +96,6 @@
             <input type="submit" name="submit" value="Submit Results">
         </form>
         <?php
-        header("Content-Type: text/html; charset=UTF-8");
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Your PHP code to handle form submission
             $polling_unit_uniqueid = $_POST['polling_unit_uniqueid'];
