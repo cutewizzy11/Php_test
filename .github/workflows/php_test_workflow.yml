@@ -1,4 +1,4 @@
-name: PHP Test Workflow
+name: PHP and MySQL Workflow
 
 on:
   push:
@@ -9,6 +9,15 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: ''
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
@@ -18,13 +27,33 @@ jobs:
       with:
         php-version: '8.0'
 
-    - name: Install dependencies
-      run: composer install  # If you have dependencies
+    - name: Install PHP extensions
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libmysqlclient-dev
+        pecl install mysql
+        echo "extension=mysql.so" | sudo tee -a /etc/php/8.0/cli/php.ini
+        echo "extension=mysql.so" | sudo tee -a /etc/php/8.0/apache2/php.ini
+        php -m
+
+    - name: Install Composer
+      run: |
+        php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+        php composer-setup.php
+        php -r "unlink('composer-setup.php');"
+        sudo mv composer.phar /usr/local/bin/composer
+        composer --version
+
+    - name: Install Composer dependencies
+      run: composer install
+
+    - name: Create MySQL Database and Import Data
+      run: |
+        mysql -u root -e "CREATE DATABASE IF NOT EXISTS bincom_test;"
+        mysql -u root bincom_test < bincom_test.sql
 
     - name: Execute PHP scripts
       run: |
-        display_polling_unit.php
-        display_lga_results.php
-        input_new_unit.php
-        # Import your SQL dump if needed
-        # mysql -u username -p password < dump.sql
+        php display_lga_results.php
+        php display_polling_unit.php
+        php input_new_unit.php
